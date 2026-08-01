@@ -83,3 +83,105 @@
 #include <iomanip>
 using namespace std;
 
+struct Student {
+    string name;
+    int id;
+    vector<double> scores;
+};
+
+vector<Student> students;
+
+double getAverage(Student s) {
+    double sum = 0;
+    for (int i = 0; i < s.scores.size(); i++) {
+        sum += s.scores[i];
+    }
+    return sum / s.scores.size();
+}
+
+void addStudent() {
+    Student s;
+    cout << "Student name: ";
+    cin.ignore();
+    getline(cin, s.name);
+    cout << "Student ID: ";
+    cin >> s.id;
+
+    int numScores;
+    cout << "How many scores? ";
+    cin >> numScores;
+
+    for (int i = 0; i < numScores; i++) {
+        double score;
+        cout << "Enter score " << i + 1 << ": ";
+        cin >> score;
+        s.scores.push_back(score);
+    }
+
+    students.push_back(s);
+    cout << "Student \"" << s.name << "\" added successfully." << endl;
+}
+
+void displayStudents() {
+    if (students.size() == 0) {
+        cout << "No students have been added yet." << endl;
+        return;
+    }
+
+    for (int i = 0; i < students.size(); i++) {
+        cout << "\nName: " << students[i].name << endl;
+        cout << "ID: " << students[i].id << endl;
+        cout << "Scores: ";
+        for (int j = 0; j < students[i].scores.size(); j++) {
+            cout << students[i].scores[j] << " ";
+        }
+        cout << endl;
+        cout << fixed << setprecision(2);
+        cout << "Average: " << getAverage(students[i]) << endl;
+    }
+}
+
+void calculateAverageForID() {
+    int id;
+    cout << "Enter student ID: ";
+    cin >> id;
+
+    for (int i = 0; i < students.size(); i++) {
+        if (students[i].id == id) {
+            cout << fixed << setprecision(2);
+            cout << students[i].name << "'s average score: " << getAverage(students[i]) << endl;
+            return;
+        }
+    }
+
+    cout << "Error: Student ID not found." << endl;
+}
+
+int main() {
+    int choice;
+
+    while (true) {
+        cout << "\n1. Add student" << endl;
+        cout << "2. Display all students" << endl;
+        cout << "3. Calculate average score" << endl;
+        cout << "4. Quit" << endl;
+        cout << "Enter your choice (1-4): ";
+        cin >> choice;
+
+        if (choice == 1) {
+            addStudent();
+        } else if (choice == 2) {
+            displayStudents();
+        } else if (choice == 3) {
+            calculateAverageForID();
+        } else if (choice == 4) {
+            cout << "Goodbye!" << endl;
+            break;
+        } else {
+            cout << "Invalid choice." << endl;
+        }
+    }
+
+    return 0;
+} 
+
